@@ -1,0 +1,101 @@
+<div class="task-form-container">
+  <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+    <div class="form-group">
+      <label for="title">Başlık</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        [(ngModel)]="task.title"
+        required
+        minlength="3"
+        #titleInput="ngModel"
+        class="form-control"
+      >
+      <div *ngIf="titleInput.invalid && titleInput.touched" class="error-message">
+        Başlık en az 3 karakter olmalıdır.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Açıklama</label>
+      <textarea
+        id="description"
+        name="description"
+        [(ngModel)]="task.description"
+        required
+        minlength="10"
+        #descriptionInput="ngModel"
+        class="form-control"
+        rows="3"
+      ></textarea>
+      <div *ngIf="descriptionInput.invalid && descriptionInput.touched" class="error-message">
+        Açıklama en az 10 karakter olmalıdır.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Kategori</label>
+      <select
+        id="category"
+        name="category"
+        [(ngModel)]="task.category"
+        required
+        #categoryInput="ngModel"
+        class="form-control"
+      >
+        <option value="">Kategori Seçin</option>
+        <option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </option>
+      </select>
+      <div *ngIf="categoryInput.invalid && categoryInput.touched" class="error-message">
+        Lütfen bir kategori seçin.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="priority">Öncelik</label>
+      <select
+        id="priority"
+        name="priority"
+        [(ngModel)]="task.priority"
+        required
+        #priorityInput="ngModel"
+        class="form-control"
+      >
+        <option *ngFor="let priority of priorities" [value]="priority.value">
+          {{ priority.label }}
+        </option>
+      </select>
+      <div *ngIf="priorityInput.invalid && priorityInput.touched" class="error-message">
+        Lütfen bir öncelik seviyesi seçin.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dueDate">Bitiş Tarihi</label>
+      <input
+        type="date"
+        id="dueDate"
+        name="dueDate"
+        [(ngModel)]="task.dueDate"
+        required
+        #dueDateInput="ngModel"
+        class="form-control"
+      >
+      <div *ngIf="dueDateInput.invalid && dueDateInput.touched" class="error-message">
+        Lütfen bir bitiş tarihi seçin.
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" [disabled]="!taskForm.form.valid">
+        {{ taskToEdit ? 'Güncelle' : 'Ekle' }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">
+        İptal
+      </button>
+    </div>
+  </form>
+</div>

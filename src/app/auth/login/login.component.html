@@ -1,0 +1,33 @@
+<div class="login-container">
+  <div class="login-box">
+    <h2>{{ isLoginMode ? 'Giriş Yap' : 'Kayıt Ol' }}</h2>
+
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+      <div class="input-group">
+        <label for="email">E-posta</label>
+        <input type="email" id="email" name="email" ngModel required email #emailInput="ngModel">
+        <div *ngIf="emailInput.invalid && emailInput.touched" class="error-message">
+          Geçerli bir e-posta adresi giriniz.
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Şifre</label>
+        <input type="password" id="password" name="password" ngModel required minlength="6" #passwordInput="ngModel">
+        <div *ngIf="passwordInput.invalid && passwordInput.touched" class="error-message">
+          Şifre en az 6 karakter olmalıdır.
+        </div>
+      </div>
+
+      <button class="btn btn-primary" type="submit" [disabled]="!authForm.valid">
+        {{ isLoginMode ? 'Giriş Yap' : 'Kayıt Ol' }}
+      </button>
+    </form>
+
+    <p *ngIf="errorMessage" class="error-message-main">{{ errorMessage }}</p>
+
+    <button class="btn btn-secondary" (click)="onSwitchMode()">
+      {{ isLoginMode ? 'Hesabın yok mu? Kayıt Ol' : 'Zaten hesabın var mı? Giriş Yap' }}
+    </button>
+  </div>
+</div>

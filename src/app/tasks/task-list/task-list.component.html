@@ -1,0 +1,71 @@
+<div class="task-container">
+  <div class="task-header">
+    <h2>Görev Yöneticisi</h2>
+    <button class="btn btn-primary" (click)="onAddTask()">Yeni Görev Ekle</button>
+  </div>
+
+  <!-- İstatistikler -->
+  <div class="task-stats">
+    <div class="stat-item">
+      <span class="stat-label">Toplam Görev</span>
+      <span class="stat-value">{{ totalTasks }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Tamamlanan</span>
+      <span class="stat-value">{{ completedTasks }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Bekleyen</span>
+      <span class="stat-value">{{ pendingTasks }}</span>
+    </div>
+  </div>
+
+  <!-- Görev Formu -->
+  <div class="task-form-container" *ngIf="showTaskForm">
+    <app-task-form
+      (formSubmitted)="onTaskSubmit($event)"
+      (cancel)="onCancel()">
+    </app-task-form>
+  </div>
+
+  <!-- Hata Mesajı -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Görev Listesi -->
+  <div class="task-list">
+    <div *ngIf="isLoading" class="loading">
+      Görevler yükleniyor...
+    </div>
+
+    <div *ngIf="!isLoading && tasks.length === 0" class="no-tasks">
+      Henüz görev eklenmemiş.
+    </div>
+
+    <div *ngFor="let task of tasks" class="task-item" [class.completed]="task.completed">
+      <div class="task-content">
+        <div class="task-header">
+          <h3>{{ task.title }}</h3>
+          <div class="task-meta">
+            <span class="task-category">{{ task.category }}</span>
+            <span class="task-priority" [class]="getPriorityClass(task.priority)">
+              {{ getPriorityLabel(task.priority) }}
+            </span>
+          </div>
+        </div>
+        <p class="task-description">{{ task.description }}</p>
+        <div class="task-footer">
+          <span class="task-date">Bitiş: {{ task.dueDate | date:'dd/MM/yyyy' }}</span>
+          <div class="task-actions">
+            <button class="btn btn-primary" (click)="onToggleComplete(task)">
+              {{ task.completed ? 'Tamamlanmadı' : 'Tamamlandı' }}
+            </button>
+            <button class="btn btn-secondary" [routerLink]="['/tasks', task.id, 'edit']">Düzenle</button>
+            <button class="btn btn-danger" (click)="onDeleteTask(task.id!)">Sil</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

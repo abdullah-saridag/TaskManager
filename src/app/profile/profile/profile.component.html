@@ -1,0 +1,24 @@
+<div class="profile-container">
+  <h2>Profil</h2>
+  
+  <div class="tasks-section">
+    <h3>Görevlerim</h3>
+    <div class="tasks-list" *ngIf="tasks$ | async as tasks">
+      <div *ngIf="tasks.length === 0" class="no-tasks">
+        Henüz görev eklenmemiş.
+      </div>
+      <div *ngFor="let task of tasks" class="task-item">
+        <div class="task-header">
+          <h4>{{ task.title }}</h4>
+          <span class="status" [class.completed]="task.completed">
+            {{ task.completed ? 'Tamamlandı' : 'Devam Ediyor' }}
+          </span>
+        </div>
+        <p class="description">{{ task.description }}</p>
+        <div class="task-footer">
+          <span class="date">Oluşturulma: {{ task.createdAt | date:'medium' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
